@@ -1,10 +1,23 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div>
-        <p>{{ reactiveValue }}</p>
-        <p>{{ computedValue }}</p>
-      </div>
+  <v-layout row wrap align-center>
+    <v-flex xs12>
+      <h2>ポケモン素早さチェッカー for 剣盾</h2>
+    </v-flex>
+    <v-flex xs12 sm6>
+      <v-card>
+        <v-card-title>自分のポケモン</v-card-title>
+        <v-card-text>
+          <v-combobox :items="pokemonsForSearch" />
+        </v-card-text>
+      </v-card>
+    </v-flex>
+    <v-flex xs12 sm6>
+      <v-card>
+        <v-card-title>相手のポケモン</v-card-title>
+        <v-card-text>
+          <v-combobox :items="pokemonsForSearch" />
+        </v-card-text>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -16,6 +29,13 @@ import {
   reactive,
   onMounted
 } from '@vue/composition-api'
+
+function kanaToHira(str) {
+  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60
+    return String.fromCharCode(chr)
+  })
+}
 
 export default createComponent({
   setup() {
@@ -31,10 +51,20 @@ export default createComponent({
     onMounted(() => {
       console.log('mounted')
     })
+    const pokemons = require('~/assets/data/pokemon.json')
+    const pokemonsForSearch = []
+    pokemons.forEach((value) => {
+      const pokemon = {
+        text: `${value.name} (S:${value.s}) ${kanaToHira(value.name)}`,
+        value: `${value.name}`
+      }
+      pokemonsForSearch.push(pokemon)
+    })
 
     return {
       reactiveValue,
-      computedValue
+      computedValue,
+      pokemonsForSearch
     }
   }
 })
