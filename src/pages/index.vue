@@ -7,8 +7,35 @@
       <v-card>
         <v-card-title>自分のポケモン</v-card-title>
         <v-card-text>
-          <v-combobox :items="pokemonsForSearch" />
+          <div>
+            <v-combobox
+              v-model="state.myPokemon"
+              :items="pokemonsForSearch"
+              label="ポケモン"
+            />
+          </div>
+          <div>
+            <v-radio-group
+              v-model="state.myNatureCorrection"
+              label="性格補正"
+              row
+            >
+              <v-radio label="上昇" value="1.1" color="white" />
+              <v-radio label="なし" value="1.0" color="white" />
+              <v-radio label="下降" value="0.9" color="white" />
+            </v-radio-group>
+          </div>
+          <div>
+            <v-combobox
+              v-model="state.myEffortValue"
+              :items="effortValueInputs"
+              label="努力値"
+            />
+          </div>
         </v-card-text>
+        <v-card-subtitle>
+          素早さ実数値: {{ compute.mySpeed.value }}
+        </v-card-subtitle>
       </v-card>
     </v-flex>
     <v-flex xs12 sm6>
@@ -23,13 +50,17 @@
 </template>
 
 <script>
-import {
-  createComponent,
-  computed,
-  reactive,
-  onMounted
-} from '@vue/composition-api'
+import { createComponent, computed, reactive } from '@vue/composition-api'
 
+const MinEffortValue = 0
+const MaxEffortValue = 252
+
+/**
+ * カタカナからひらがなに変換
+ * (IncrementalSearch用)
+ *
+ * @param str 対象のカタカナの文字列
+ */
 function kanaToHira(str) {
   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
     const chr = match.charCodeAt(0) - 0x60
@@ -37,34 +68,85 @@ function kanaToHira(str) {
   })
 }
 
+/**
+ * 素早さ実数値計算
+ *
+ * @param baseStats (素早さの)種族値
+ * @param natureCorrection 性格補正値
+ * @param effortValue 努力値
+ * @param level レベル
+ */
+function calcSpeed(baseStats, natureCorrection, effortValue, level) {
+  return Math.floor(
+    ((baseStats * 2 + 31 + effortValue / 4) * (level / 100) + 5) *
+      natureCorrection
+  )
+}
+
+/**
+ * VueComponent
+ */
 export default createComponent({
   setup() {
-    const reactiveValue = reactive('reactive value')
-
-    // computed property
-    const computedValue = computed(() => `${reactiveValue} + computedValue`)
-
-    // created メソッド
-    console.log('created')
-
-    // mounted メソッド
-    onMounted(() => {
-      console.log('mounted')
+    // reactive properties
+    const state = reactive({
+      myPokemon: '',
+      myNatureCorrection: '1.1',
+      myLevel: '50',
+      myEffortValue: '252'
     })
+
+    // computed properties
+    const compute = {
+      mySpeed: computed(() => {
+        // v-comboboxの初期値と変更されたあとの値の型が一致しないので凌ぎの実装
+        if (state.myPokemon === null || state.myPokemon === '') {
+          return ''
+        }
+        const ev =
+          typeof state.myEffortValue === 'object'
+            ? state.myEffortValue.value
+            : state.myEffortValue
+        return calcSpeed(
+          Number(state.myPokemon.value),
+          Number(state.myNatureCorrection),
+          Number(ev),
+          Number(state.myLevel)
+        )
+      })
+    }
+
+    // load json
     const pokemons = require('~/assets/data/pokemon.json')
+
+    // create incremental search pokemon items
     const pokemonsForSearch = []
     pokemons.forEach((value) => {
-      const pokemon = {
+      pokemonsForSearch.push({
         text: `${value.name} (S:${value.s}) ${kanaToHira(value.name)}`,
-        value: `${value.name}`
-      }
-      pokemonsForSearch.push(pokemon)
+        value: `${value.s}`
+      })
     })
 
+    // create incremental search ev items
+    const effortValueInputs = [
+      {
+        text: MaxEffortValue,
+        value: MaxEffortValue
+      }
+    ]
+    for (let ev = MinEffortValue; ev < MaxEffortValue; ev += 4) {
+      effortValueInputs.push({
+        text: ev,
+        value: ev
+      })
+    }
+
     return {
-      reactiveValue,
-      computedValue,
-      pokemonsForSearch
+      state,
+      compute,
+      pokemonsForSearch,
+      effortValueInputs
     }
   }
 })
