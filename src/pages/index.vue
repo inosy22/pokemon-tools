@@ -33,6 +33,13 @@
             />
           </div>
           <div>
+            <v-select
+              v-model="state.myRank"
+              :items="rankItems"
+              label="補正ランク"
+            />
+          </div>
+          <div>
             <v-checkbox
               v-model="state.myHasScarf"
               label="こだわりスカーフ"
@@ -43,17 +50,20 @@
               label="まひ状態"
               color="white"
             />
-          </div>
-          <div>
-            <v-select
-              v-model="state.myRank"
-              :items="rankItems"
-              label="補正ランク"
+            <v-checkbox
+              v-model="state.myIsActiveTailwind"
+              label="おいかぜ"
+              color="white"
+            />
+            <v-checkbox
+              v-model="state.myIsActiveWeather"
+              label="天候の特性での補正"
+              color="white"
             />
           </div>
         </v-card-text>
         <v-card-subtitle>
-          素早さ実数値: {{ compute.mySpeed.value }}
+          <h3>素早さ実数値: {{ compute.mySpeed.value }}</h3>
         </v-card-subtitle>
       </v-card>
     </v-flex>
@@ -92,10 +102,15 @@ function kanaToHira(str) {
 /**
  * 素早さ実数値計算
  *
- * @param baseStats (素早さの)種族値
- * @param natureCorrection 性格補正値
- * @param effortValue 努力値
- * @param level レベル
+ * @param {Number} baseStats (素早さの)種族値
+ * @param {Number} natureCorrection 性格補正値
+ * @param {Number} effortValue 努力値
+ * @param {Number} level レベル
+ * @param {Number} rank 補正ランク
+ * @param {Boolean} hasScarf こだわりスカーフ持ちかどうか
+ * @param {Boolean} isParalysis まひ状態かどうか
+ * @param {Boolean} isActiveTailwind おいかぜ状態かどうか
+ * @param {Boolean} isActiveWeather 天候特性が発動状態かどうか(すいすいなど)
  */
 function calcSpeed(
   baseStats,
@@ -104,12 +119,20 @@ function calcSpeed(
   level,
   rank,
   hasScarf,
-  isParalysis
+  isParalysis,
+  isActiveTailwind,
+  isActiveWeather
 ) {
   let actualStats = Math.floor(
     ((baseStats * 2 + 31 + effortValue / 4) * (level / 100) + 5) *
       natureCorrection
   )
+  if (isActiveTailwind) {
+    actualStats = Math.floor(actualStats * 2)
+  }
+  if (isActiveWeather) {
+    actualStats = Math.floor(actualStats * 2)
+  }
   if (hasScarf) {
     actualStats = Math.floor(actualStats * 1.5)
   }
@@ -137,7 +160,9 @@ export default createComponent({
       myEffortValue: '252',
       myRank: '0',
       myHasScarf: false,
-      myIsParalysis: false
+      myIsParalysis: false,
+      myIsActiveTailwind: false,
+      myIsActiveWeather: false
     })
 
     // computed properties
@@ -158,7 +183,9 @@ export default createComponent({
           Number(state.myLevel),
           Number(state.myRank),
           state.myHasScarf,
-          state.myIsParalysis
+          state.myIsParalysis,
+          state.myIsActiveTailwind,
+          state.myIsActiveWeather
         )
       })
     }
@@ -191,7 +218,7 @@ export default createComponent({
 
     // create rank items
     const rankItems = []
-    for (let rank = MinRank; rank <= MaxRank; rank++) {
+    for (let rank = MaxRank; rank >= MinRank; rank--) {
       let rankStr = String(rank)
       if (rank > 0) {
         rankStr = '+' + rankStr
