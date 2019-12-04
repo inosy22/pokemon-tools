@@ -2,7 +2,9 @@
   <v-app dark>
     <v-content>
       <v-container>
-        <nuxt />
+        <div :style="{ margin: '0 10px' }">
+          <nuxt />
+        </div>
       </v-container>
     </v-content>
     <v-footer :fixed="fixed" app>

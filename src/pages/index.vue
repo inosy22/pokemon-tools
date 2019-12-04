@@ -32,6 +32,25 @@
               label="努力値"
             />
           </div>
+          <div>
+            <v-checkbox
+              v-model="state.myHasScarf"
+              label="こだわりスカーフ"
+              color="white"
+            />
+            <v-checkbox
+              v-model="state.myIsParalysis"
+              label="まひ状態"
+              color="white"
+            />
+          </div>
+          <div>
+            <v-select
+              v-model="state.myRank"
+              :items="rankItems"
+              label="補正ランク"
+            />
+          </div>
         </v-card-text>
         <v-card-subtitle>
           素早さ実数値: {{ compute.mySpeed.value }}
@@ -54,6 +73,8 @@ import { createComponent, computed, reactive } from '@vue/composition-api'
 
 const MinEffortValue = 0
 const MaxEffortValue = 252
+const MinRank = -6
+const MaxRank = 6
 
 /**
  * カタカナからひらがなに変換
@@ -76,11 +97,31 @@ function kanaToHira(str) {
  * @param effortValue 努力値
  * @param level レベル
  */
-function calcSpeed(baseStats, natureCorrection, effortValue, level) {
-  return Math.floor(
+function calcSpeed(
+  baseStats,
+  natureCorrection,
+  effortValue,
+  level,
+  rank,
+  hasScarf,
+  isParalysis
+) {
+  let actualStats = Math.floor(
     ((baseStats * 2 + 31 + effortValue / 4) * (level / 100) + 5) *
       natureCorrection
   )
+  if (hasScarf) {
+    actualStats = Math.floor(actualStats * 1.5)
+  }
+  if (rank > 0) {
+    actualStats = Math.floor((actualStats * (rank + 2)) / 2)
+  } else if (rank < 0) {
+    actualStats = Math.floor((actualStats * 2) / (Math.abs(rank) + 2))
+  }
+  if (isParalysis) {
+    actualStats = Math.floor(actualStats / 2)
+  }
+  return actualStats
 }
 
 /**
@@ -93,7 +134,10 @@ export default createComponent({
       myPokemon: '',
       myNatureCorrection: '1.1',
       myLevel: '50',
-      myEffortValue: '252'
+      myEffortValue: '252',
+      myRank: '0',
+      myHasScarf: false,
+      myIsParalysis: false
     })
 
     // computed properties
@@ -111,7 +155,10 @@ export default createComponent({
           Number(state.myPokemon.value),
           Number(state.myNatureCorrection),
           Number(ev),
-          Number(state.myLevel)
+          Number(state.myLevel),
+          Number(state.myRank),
+          state.myHasScarf,
+          state.myIsParalysis
         )
       })
     }
@@ -142,11 +189,22 @@ export default createComponent({
       })
     }
 
+    // create rank items
+    const rankItems = []
+    for (let rank = MinRank; rank <= MaxRank; rank++) {
+      let rankStr = String(rank)
+      if (rank > 0) {
+        rankStr = '+' + rankStr
+      }
+      rankItems.push(rankStr)
+    }
+
     return {
       state,
       compute,
       pokemonsForSearch,
-      effortValueInputs
+      effortValueInputs,
+      rankItems
     }
   }
 })
