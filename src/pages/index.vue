@@ -21,9 +21,9 @@
               label="性格補正"
               row
             >
-              <v-radio label="上昇" value="1.1" color="white" />
-              <v-radio label="なし" value="1.0" color="white" />
-              <v-radio label="下降" value="0.9" color="white" />
+              <v-radio label="上昇" value="1" color="white" />
+              <v-radio label="なし" value="0" color="white" />
+              <v-radio label="下降" value="-1" color="white" />
             </v-radio-group>
           </div>
           <div>
@@ -83,11 +83,8 @@
 
 <script>
 import { createComponent, computed, reactive } from '@vue/composition-api'
-
-const MinEffortValue = 0
-const MaxEffortValue = 252
-const MinRank = -6
-const MaxRank = 6
+import BaseStatsCalculator from '~/lib/pokemon/BaseStatsCalculator'
+import SpeedStatsCalculator from '~/lib/pokemon/SpeedStatsCalculator'
 
 /**
  * カタカナからひらがなに変換
@@ -103,54 +100,6 @@ const MaxRank = 6
 // }
 
 /**
- * 素早さ実数値計算
- *
- * @param {Number} baseStats (素早さの)種族値
- * @param {Number} natureCorrection 性格補正値
- * @param {Number} effortValue 努力値
- * @param {Number} level レベル
- * @param {Number} rank 補正ランク
- * @param {Boolean} hasScarf こだわりスカーフ持ちかどうか
- * @param {Boolean} isParalysis まひ状態かどうか
- * @param {Boolean} isActiveTailwind おいかぜ状態かどうか
- * @param {Boolean} isActiveWeather 天候特性が発動状態かどうか(すいすいなど)
- */
-function calcSpeed(
-  baseStats,
-  natureCorrection,
-  effortValue,
-  level,
-  rank,
-  hasScarf,
-  isParalysis,
-  isActiveTailwind,
-  isActiveWeather
-) {
-  let actualStats = Math.floor(
-    ((baseStats * 2 + 31 + effortValue / 4) * (level / 100) + 5) *
-      natureCorrection
-  )
-  if (isActiveTailwind) {
-    actualStats = Math.floor(actualStats * 2)
-  }
-  if (isActiveWeather) {
-    actualStats = Math.floor(actualStats * 2)
-  }
-  if (hasScarf) {
-    actualStats = Math.floor(actualStats * 1.5)
-  }
-  if (rank > 0) {
-    actualStats = Math.floor((actualStats * (rank + 2)) / 2)
-  } else if (rank < 0) {
-    actualStats = Math.floor((actualStats * 2) / (Math.abs(rank) + 2))
-  }
-  if (isParalysis) {
-    actualStats = Math.floor(actualStats / 2)
-  }
-  return actualStats
-}
-
-/**
  * VueComponent
  */
 export default createComponent({
@@ -161,7 +110,7 @@ export default createComponent({
     // reactive properties
     const state = reactive({
       myPokemonName: '',
-      myNatureCorrection: '1.1',
+      myNatureCorrection: '1',
       myLevel: '50',
       myEffortValue: '252',
       myRank: '0',
@@ -178,17 +127,17 @@ export default createComponent({
         if (pokemons[state.myPokemonName] === undefined) {
           return '???'
         }
-        return calcSpeed(
-          Number(pokemons[state.myPokemonName].s),
-          Number(state.myNatureCorrection),
-          Number(state.myEffortValue),
-          Number(state.myLevel),
-          Number(state.myRank),
-          state.myHasScarf,
-          state.myIsParalysis,
-          state.myIsActiveTailwind,
-          state.myIsActiveWeather
-        )
+        const speedStatsCalculator = new SpeedStatsCalculator()
+        speedStatsCalculator.setBaseStats(pokemons[state.myPokemonName].s)
+        speedStatsCalculator.setNatureCorrection(state.myNatureCorrection)
+        speedStatsCalculator.setEffortValue(state.myEffortValue)
+        speedStatsCalculator.setLevel(state.myLevel)
+        speedStatsCalculator.setRank(state.myRank)
+        speedStatsCalculator.setHasScarf(state.myHasScarf)
+        speedStatsCalculator.setIsParalysis(state.myIsParalysis)
+        speedStatsCalculator.setIsActiveTailwind(state.myIsActiveTailwind)
+        speedStatsCalculator.setIsActiveWeather(state.myIsActiveWeather)
+        return speedStatsCalculator.calc()
       })
     }
 
@@ -196,14 +145,22 @@ export default createComponent({
     const pokemonsForSearch = Object.keys(pokemons)
 
     // create incremental search ev items
-    const effortValueInputs = [MaxEffortValue]
-    for (let ev = MinEffortValue; ev < MaxEffortValue; ev += 4) {
+    const effortValueInputs = [BaseStatsCalculator.MaxEffortValue]
+    for (
+      let ev = BaseStatsCalculator.MinEffortValue;
+      ev < BaseStatsCalculator.MaxEffortValue;
+      ev += 4
+    ) {
       effortValueInputs.push(String(ev))
     }
 
     // create rank items
     const rankItems = []
-    for (let rank = MaxRank; rank >= MinRank; rank--) {
+    for (
+      let rank = BaseStatsCalculator.MaxRank;
+      rank >= BaseStatsCalculator.MinRank;
+      rank--
+    ) {
       let rankStr = String(rank)
       if (rank > 0) {
         rankStr = '+' + rankStr
