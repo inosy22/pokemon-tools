@@ -9,9 +9,10 @@
         <v-card-text>
           <div>
             <v-combobox
-              v-model="state.myPokemon"
+              v-model="state.myPokemonName"
               :items="pokemonsForSearch"
               label="ポケモン"
+              dense
             />
           </div>
           <div>
@@ -30,6 +31,7 @@
               v-model="state.myEffortValue"
               :items="effortValueInputs"
               label="努力値"
+              dense
             />
           </div>
           <div>
@@ -37,6 +39,7 @@
               v-model="state.myRank"
               :items="rankItems"
               label="補正ランク"
+              dense
             />
           </div>
           <div>
@@ -92,12 +95,12 @@ const MaxRank = 6
  *
  * @param str 対象のカタカナの文字列
  */
-function kanaToHira(str) {
-  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
-    const chr = match.charCodeAt(0) - 0x60
-    return String.fromCharCode(chr)
-  })
-}
+// function kanaToHira(str) {
+//   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+//     const chr = match.charCodeAt(0) - 0x60
+//     return String.fromCharCode(chr)
+//   })
+// }
 
 /**
  * 素早さ実数値計算
@@ -152,9 +155,12 @@ function calcSpeed(
  */
 export default createComponent({
   setup() {
+    // load json
+    const pokemons = require('~/assets/data/pokemon.json')
+
     // reactive properties
     const state = reactive({
-      myPokemon: '',
+      myPokemonName: '',
       myNatureCorrection: '1.1',
       myLevel: '50',
       myEffortValue: '252',
@@ -168,18 +174,14 @@ export default createComponent({
     // computed properties
     const compute = {
       mySpeed: computed(() => {
-        // v-comboboxの初期値と変更されたあとの値の型が一致しないので凌ぎの実装
-        if (state.myPokemon === null || state.myPokemon === '') {
-          return ''
+        // ポケモンが存在しなければ計算不能
+        if (pokemons[state.myPokemonName] === undefined) {
+          return '???'
         }
-        const ev =
-          typeof state.myEffortValue === 'object'
-            ? state.myEffortValue.value
-            : state.myEffortValue
         return calcSpeed(
-          Number(state.myPokemon.value),
+          Number(pokemons[state.myPokemonName].s),
           Number(state.myNatureCorrection),
-          Number(ev),
+          Number(state.myEffortValue),
           Number(state.myLevel),
           Number(state.myRank),
           state.myHasScarf,
@@ -190,30 +192,13 @@ export default createComponent({
       })
     }
 
-    // load json
-    const pokemons = require('~/assets/data/pokemon.json')
-
     // create incremental search pokemon items
-    const pokemonsForSearch = []
-    pokemons.forEach((value) => {
-      pokemonsForSearch.push({
-        text: `${value.name} (S:${value.s}) ${kanaToHira(value.name)}`,
-        value: `${value.s}`
-      })
-    })
+    const pokemonsForSearch = Object.keys(pokemons)
 
     // create incremental search ev items
-    const effortValueInputs = [
-      {
-        text: MaxEffortValue,
-        value: MaxEffortValue
-      }
-    ]
+    const effortValueInputs = [MaxEffortValue]
     for (let ev = MinEffortValue; ev < MaxEffortValue; ev += 4) {
-      effortValueInputs.push({
-        text: ev,
-        value: ev
-      })
+      effortValueInputs.push(String(ev))
     }
 
     // create rank items
