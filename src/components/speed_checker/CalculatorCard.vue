@@ -6,6 +6,7 @@
         <v-combobox
           v-model="state.pokemonName"
           :items="pokemonsForSearch"
+          :error="compute.speed.value === '???'"
           autocomplete="off"
           label="ポケモン"
           dense
@@ -13,9 +14,9 @@
       </div>
       <v-row no-gutters>
         <v-col>
-          <span style="font-size: 1.1rem">
+          <strong style="font-size: 1.1rem; color: white;">
             実数値: {{ compute.speed.value }}
-          </span>
+          </strong>
         </v-col>
         <v-col>
           <span style="font-size: 1.1rem">
