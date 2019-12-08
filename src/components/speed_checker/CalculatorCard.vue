@@ -6,6 +6,7 @@
         <v-combobox
           v-model="state.pokemonName"
           :items="pokemonsForSearch"
+          autocomplete="off"
           label="ポケモン"
           dense
         />
@@ -88,6 +89,10 @@ export default createComponent({
     title: {
       type: String,
       default: ''
+    },
+    calculatedSpeed: {
+      type: Function,
+      default: () => {}
     }
   },
   setup(props, ctx) {
@@ -124,7 +129,9 @@ export default createComponent({
         speedStatsCalculator.setIsParalysis(state.isParalysis)
         speedStatsCalculator.setIsActiveTailwind(state.isActiveTailwind)
         speedStatsCalculator.setIsActiveWeather(state.isActiveWeather)
-        return speedStatsCalculator.calc()
+        const speed = speedStatsCalculator.calc()
+        props.calculatedSpeed(speed) // 親への連携
+        return speed
       })
     }
 
