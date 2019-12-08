@@ -141,18 +141,21 @@ export default createComponent({
         if (pokemons[state.pokemonName] === undefined) {
           return '???'
         }
-        const speedStatsCalculator = new SpeedStatsCalculator()
-        speedStatsCalculator.setBaseStats(pokemons[state.pokemonName].s)
-        speedStatsCalculator.setNatureCorrection(state.natureCorrection)
-        speedStatsCalculator.setEffortValue(state.effortValue)
-        speedStatsCalculator.setLevel(state.level)
-        speedStatsCalculator.setRank(state.rank)
-        speedStatsCalculator.setHasScarf(state.hasScarf)
-        speedStatsCalculator.setIsParalysis(state.isParalysis)
-        speedStatsCalculator.setIsActiveTailwind(state.isActiveTailwind)
-        speedStatsCalculator.setIsActiveWeather(state.isActiveWeather)
-        const speed = speedStatsCalculator.calc()
-        props.calculatedSpeed(speed) // 親への連携
+        let speed = '???'
+        try {
+          const speedStatsCalculator = new SpeedStatsCalculator()
+          speedStatsCalculator.setBaseStats(pokemons[state.pokemonName].s)
+          speedStatsCalculator.setNatureCorrection(state.natureCorrection)
+          speedStatsCalculator.setEffortValue(state.effortValue)
+          speedStatsCalculator.setLevel(state.level)
+          speedStatsCalculator.setRank(state.rank)
+          speedStatsCalculator.setHasScarf(state.hasScarf)
+          speedStatsCalculator.setIsParalysis(state.isParalysis)
+          speedStatsCalculator.setIsActiveTailwind(state.isActiveTailwind)
+          speedStatsCalculator.setIsActiveWeather(state.isActiveWeather)
+          speed = speedStatsCalculator.calc()
+          props.calculatedSpeed(speed) // 親への連携
+        } catch (e) {}
         return speed
       }),
       speedBaseStats: computed(() => {
