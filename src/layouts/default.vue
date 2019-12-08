@@ -5,13 +5,13 @@
         <div :style="{ margin: '0 10px' }">
           <nuxt />
         </div>
+        <v-flex :style="{ height: '80px', 'text-align': 'center' }" xs12>
+          <span>
+            &copy; 2019 created by
+            <a href="https://twitter.com/inosy22_">@inosy22</a>
+          </span>
+        </v-flex>
       </v-container>
-      <v-footer>
-        <span>
-          &copy; 2019 created by
-          <a href="https://twitter.com/inosy22_">@inosy22</a>
-        </span>
-      </v-footer>
     </v-content>
   </v-app>
 </template>
