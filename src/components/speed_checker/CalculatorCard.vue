@@ -96,12 +96,12 @@ import SpeedStatsCalculator from '~/lib/pokemon/SpeedStatsCalculator'
  *
  * @param str 対象のカタカナの文字列
  */
-// function kanaToHira(str) {
-//   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
-//     const chr = match.charCodeAt(0) - 0x60
-//     return String.fromCharCode(chr)
-//   })
-// }
+function kanaToHira(str) {
+  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60
+    return String.fromCharCode(chr)
+  })
+}
 
 /**
  * VueComponent
@@ -137,14 +137,15 @@ export default createComponent({
     // computed properties
     const compute = {
       speed: computed(() => {
-        // ポケモンが存在しなければ計算不能
-        if (pokemons[state.pokemonName] === undefined) {
+        // ポケモンが存在しなければ計算不能 (要リファクタリング)
+        const trimedName = state.pokemonName.split('/')[0].trim()
+        if (pokemons[trimedName] === undefined) {
           return '???'
         }
         let speed = '???'
         try {
           const speedStatsCalculator = new SpeedStatsCalculator()
-          speedStatsCalculator.setBaseStats(pokemons[state.pokemonName].s)
+          speedStatsCalculator.setBaseStats(pokemons[trimedName].s)
           speedStatsCalculator.setNatureCorrection(state.natureCorrection)
           speedStatsCalculator.setEffortValue(state.effortValue)
           speedStatsCalculator.setLevel(state.level)
@@ -159,15 +160,21 @@ export default createComponent({
         return speed
       }),
       speedBaseStats: computed(() => {
-        if (pokemons[state.pokemonName] === undefined) {
+        // ポケモンが存在しなければ計算不能 (要リファクタリング)
+        const trimedName = state.pokemonName.split('/')[0].trim()
+        if (pokemons[trimedName] === undefined) {
           return '???'
         }
-        return pokemons[state.pokemonName].s
+        return pokemons[trimedName].s
       })
     }
 
     // create incremental search pokemon items
-    const pokemonsForSearch = Object.keys(pokemons)
+    const pokemonsForSearch = []
+    Object.keys(pokemons).forEach((val) => {
+      const hira = kanaToHira(val)
+      pokemonsForSearch.push(`${val} / ${hira}`)
+    })
 
     // create incremental search ev items
     const effortValueInputs = [
