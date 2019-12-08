@@ -11,6 +11,18 @@
           dense
         />
       </div>
+      <v-row no-gutters>
+        <v-col>
+          <span style="font-size: 1.1rem">
+            実数値: {{ compute.speed.value }}
+          </span>
+        </v-col>
+        <v-col>
+          <span style="font-size: 1.1rem">
+            種族値: {{ compute.speedBaseStats.value }}
+          </span>
+        </v-col>
+      </v-row>
       <div>
         <v-radio-group v-model="state.natureCorrection" label="性格補正" row>
           <v-radio label="上昇" value="1" color="white" />
@@ -18,48 +30,57 @@
           <v-radio label="下降" value="-1" color="white" />
         </v-radio-group>
       </div>
-      <div>
-        <v-combobox
-          v-model="state.effortValue"
-          :items="effortValueInputs"
-          label="努力値"
-          dense
-        />
-      </div>
-      <div>
-        <v-select
-          v-model="state.rank"
-          :items="rankItems"
-          label="補正ランク"
-          dense
-        />
-      </div>
-      <div>
-        <v-checkbox
-          v-model="state.hasScarf"
-          label="こだわりスカーフ"
-          color="white"
-        />
-        <v-checkbox
-          v-model="state.isParalysis"
-          label="まひ状態"
-          color="white"
-        />
-        <v-checkbox
-          v-model="state.isActiveTailwind"
-          label="おいかぜ"
-          color="white"
-        />
-        <v-checkbox
-          v-model="state.isActiveWeather"
-          label="天候の特性での補正"
-          color="white"
-        />
-      </div>
+      <v-row no-gutters>
+        <v-col class="pr-5">
+          <v-combobox
+            v-model="state.effortValue"
+            :items="effortValueInputs"
+            label="努力値"
+            dense
+          />
+        </v-col>
+        <v-col class="pr-5">
+          <v-select
+            v-model="state.rank"
+            :items="rankItems"
+            label="補正ランク"
+            dense
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-checkbox
+            v-model="state.hasScarf"
+            label="スカーフ (×1.5)"
+            color="white"
+          />
+        </v-col>
+        <v-col>
+          <v-checkbox
+            v-model="state.isParalysis"
+            label="まひ状態 (×0.5)"
+            color="white"
+          />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-checkbox
+            v-model="state.isActiveTailwind"
+            label="おいかぜ (×2.0)"
+            color="white"
+          />
+        </v-col>
+        <v-col>
+          <v-checkbox
+            v-model="state.isActiveWeather"
+            label="天候特性 (×2.0)"
+            color="white"
+          />
+        </v-col>
+      </v-row>
     </v-card-text>
-    <v-card-subtitle>
-      <h3>素早さ実数値: {{ compute.speed.value }}</h3>
-    </v-card-subtitle>
   </v-card>
 </template>
 
@@ -132,6 +153,12 @@ export default createComponent({
         const speed = speedStatsCalculator.calc()
         props.calculatedSpeed(speed) // 親への連携
         return speed
+      }),
+      speedBaseStats: computed(() => {
+        if (pokemons[state.pokemonName] === undefined) {
+          return '???'
+        }
+        return pokemons[state.pokemonName].s
       })
     }
 

@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap align-center>
     <v-flex xs12>
-      <h2>ポケモン素早さチェッカーfor剣盾</h2>
+      <h2>ポケモン素早さ比較 for 剣盾</h2>
     </v-flex>
     <v-flex xs12 sm6 class="card-container">
       <CalculatorCard
