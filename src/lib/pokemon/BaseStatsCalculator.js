@@ -8,9 +8,19 @@ export default class BaseStatsCalculator {
   static MinEffortValue = 0
 
   /**
+   * 努力値のちょい振り
+   */
+  static LittleEffortValue = 4
+
+  /**
    * 努力値の最大値
    */
   static MaxEffortValue = 252
+
+  /**
+   * 努力値の間隔 (Lv.50想定)
+   */
+  static IntervalEffortValue = 8
 
   /**
    * 補正ランクの最小値

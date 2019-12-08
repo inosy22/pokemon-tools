@@ -50,6 +50,9 @@
         </v-progress-linear>
       </v-flex>
     </v-footer>
+    <v-flex xs12 style="text-align: center">
+      ※ポケモンはLv.50を想定しています
+    </v-flex>
   </v-layout>
 </template>
 

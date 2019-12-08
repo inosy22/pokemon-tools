@@ -170,11 +170,14 @@ export default createComponent({
     const pokemonsForSearch = Object.keys(pokemons)
 
     // create incremental search ev items
-    const effortValueInputs = [BaseStatsCalculator.MaxEffortValue]
+    const effortValueInputs = [
+      BaseStatsCalculator.MaxEffortValue,
+      BaseStatsCalculator.MinEffortValue
+    ]
     for (
-      let ev = BaseStatsCalculator.MinEffortValue;
+      let ev = BaseStatsCalculator.LittleEffortValue;
       ev < BaseStatsCalculator.MaxEffortValue;
-      ev += 4
+      ev += BaseStatsCalculator.IntervalEffortValue
     ) {
       effortValueInputs.push(String(ev))
     }
