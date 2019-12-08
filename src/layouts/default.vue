@@ -6,13 +6,13 @@
           <nuxt />
         </div>
       </v-container>
+      <v-footer>
+        <span>
+          &copy; 2019 created by
+          <a href="https://twitter.com/inosy22_">@inosy22</a>
+        </span>
+      </v-footer>
     </v-content>
-    <v-footer :fixed="fixed" app>
-      <span
-        >&copy; 2019 created by
-        <a href="https://twitter.com/inosy22_">@inosy22</a></span
-      >
-    </v-footer>
   </v-app>
 </template>
 

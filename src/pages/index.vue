@@ -15,31 +15,32 @@
         :calculated-speed="calculatedOpponentSpeed"
       />
     </v-flex>
-    <v-flex xs12 class="card-container">
-      <v-card>
-        <v-card-title>
-          <div>
-            自分の素早さ:{{
-              isNaN(state.ownSpeed) || state.ownSpeed === null
-                ? '計測不能'
-                : state.ownSpeed
-            }}
-          </div>
-          &nbsp;
-          <div>
-            {{ compute.result.value }}
-          </div>
-          &nbsp;
-          <div>
-            相手の素早さ:{{
-              isNaN(state.opponentSpeed) || state.opponentSpeed === null
-                ? '計測不能'
-                : state.opponentSpeed
-            }}
-          </div>
-        </v-card-title>
-      </v-card>
-    </v-flex>
+    <!-- スマホの場合だけ、固定フッターにする -->
+    <v-footer :fixed="$vuetify.breakpoint.xs" width="100%">
+      <v-flex xs12 sm12 class="card-container">
+        <v-card>
+          <v-row justify="space-around">
+            <v-col style="text-align: left;margin-left: 10px">
+              {{
+                isNaN(state.ownSpeed) || state.ownSpeed === null
+                  ? '計測不能'
+                  : state.ownSpeed
+              }}
+            </v-col>
+            <v-col style="text-align: center">
+              {{ compute.result.value }}
+            </v-col>
+            <v-col style="text-align: right;margin-right: 10px">
+              {{
+                isNaN(state.opponentSpeed) || state.opponentSpeed === null
+                  ? '計測不能'
+                  : state.opponentSpeed
+              }}
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-flex>
+    </v-footer>
   </v-layout>
 </template>
 
