@@ -7,6 +7,9 @@
           v-model="state.pokemonName"
           :items="pokemonsForSearch"
           :error="compute.speed.value === '???'"
+          @click:clear="clearText"
+          clear-icon="mdi-close-circle"
+          clearable
           autocomplete="off"
           label="ポケモン"
           dense
@@ -32,7 +35,7 @@
         </v-radio-group>
       </div>
       <v-row no-gutters>
-        <v-flex xs5 sm4>
+        <v-flex xs3>
           <v-combobox
             v-model="state.effortValue"
             :items="effortValueInputs"
@@ -40,7 +43,24 @@
             dense
           />
         </v-flex>
-        <v-flex xs1 sm2> </v-flex>
+        <v-flex xs3>
+          <PlusMinusButton
+            :enable-minus-button="
+              compute.enableDecrementEffortValueButton.value
+            "
+            :enable-plus-button="compute.enableIncrementEffortValueButton.value"
+            :on-click-minus-button="
+              () => {
+                changeEffortValue(-1)
+              }
+            "
+            :on-click-plus-button="
+              () => {
+                changeEffortValue(+1)
+              }
+            "
+          />
+        </v-flex>
         <v-flex xs3 class="pr-1">
           <v-select
             v-model="state.rank"
@@ -50,36 +70,20 @@
           />
         </v-flex>
         <v-flex xs3>
-          <template v-if="enableDecrementRankButton(state.rank)">
-            <v-icon
-              @click="changeRank(-1)"
-              large
-              color="rgba(255, 255, 255, 0.7)"
-              class="pt-1"
-            >
-              mdi-minus-box
-            </v-icon>
-          </template>
-          <template v-else>
-            <v-icon large color="rgba(255, 255, 255, 0.7)" class="pt-1">
-              mdi-minus-box-outline
-            </v-icon>
-          </template>
-          <template v-if="enableIncrementRankButton(state.rank)">
-            <v-icon
-              @click="changeRank(+1)"
-              color="rgba(255, 255, 255, 0.7)"
-              large
-              class="pt-1"
-            >
-              mdi-plus-box
-            </v-icon>
-          </template>
-          <template v-else>
-            <v-icon large color="rgba(255, 255, 255, 0.7)" class="pt-1">
-              mdi-plus-box-outline
-            </v-icon>
-          </template>
+          <PlusMinusButton
+            :enable-minus-button="compute.enableDecrementRankButton.value"
+            :enable-plus-button="compute.enableIncrementRankButton.value"
+            :on-click-minus-button="
+              () => {
+                changeRank(-1)
+              }
+            "
+            :on-click-plus-button="
+              () => {
+                changeRank(+1)
+              }
+            "
+          />
         </v-flex>
       </v-row>
       <v-row no-gutters>
@@ -122,6 +126,7 @@
 import { createComponent, computed, reactive } from '@vue/composition-api'
 import BaseStatsCalculator from '~/lib/pokemon/BaseStatsCalculator'
 import SpeedStatsCalculator from '~/lib/pokemon/SpeedStatsCalculator'
+import PlusMinusButton from '~/components/speed_checker/PlusMinusButton'
 
 /**
  * カタカナからひらがなに変換
@@ -150,6 +155,24 @@ function rankNumToStr(rankNum) {
 }
 
 /**
+ * ポケモン名のトリミング
+ *
+ * @param {String|null|undefined} inputPokemonName 入力されたポケモン名
+ * @param {Object} pokemonNameMap
+ * @return {String|null} 存在しない場合はnull, 存在すればポケモン名を返す
+ */
+function trimPokemonName(inputPokemonName, pokemonNameMap) {
+  if (inputPokemonName === null || inputPokemonName === undefined) {
+    return null
+  }
+  const trimedName = inputPokemonName.split('/')[0].trim()
+  if (pokemonNameMap[trimedName] === undefined) {
+    return null
+  }
+  return trimedName
+}
+
+/**
  * VueComponent
  */
 export default createComponent({
@@ -162,6 +185,9 @@ export default createComponent({
       type: Function,
       default: () => {}
     }
+  },
+  components: {
+    PlusMinusButton
   },
   setup(props, ctx) {
     // load json
@@ -183,12 +209,11 @@ export default createComponent({
     // computed properties
     const compute = {
       speed: computed(() => {
-        // ポケモンが存在しなければ計算不能 (要リファクタリング)
-        const trimedName = state.pokemonName.split('/')[0].trim()
-        if (pokemons[trimedName] === undefined) {
-          return '???'
-        }
         let speed = '???'
+        const trimedName = trimPokemonName(state.pokemonName, pokemons)
+        if (trimedName === null) {
+          return speed
+        }
         try {
           const speedStatsCalculator = new SpeedStatsCalculator()
           speedStatsCalculator.setBaseStats(pokemons[trimedName].s)
@@ -206,12 +231,23 @@ export default createComponent({
         return speed
       }),
       speedBaseStats: computed(() => {
-        // ポケモンが存在しなければ計算不能 (要リファクタリング)
-        const trimedName = state.pokemonName.split('/')[0].trim()
-        if (pokemons[trimedName] === undefined) {
+        const trimedName = trimPokemonName(state.pokemonName, pokemons)
+        if (trimedName === null) {
           return '???'
         }
         return pokemons[trimedName].s
+      }),
+      enableDecrementEffortValueButton: computed(() => {
+        return Number(state.effortValue) > BaseStatsCalculator.MinEffortValue
+      }),
+      enableIncrementEffortValueButton: computed(() => {
+        return Number(state.effortValue) < BaseStatsCalculator.MaxEffortValue
+      }),
+      enableDecrementRankButton: computed(() => {
+        return Number(state.rank) > BaseStatsCalculator.MinRank
+      }),
+      enableIncrementRankButton: computed(() => {
+        return Number(state.rank) < BaseStatsCalculator.MaxRank
       })
     }
 
@@ -222,7 +258,7 @@ export default createComponent({
       pokemonsForSearch.push(`${val} / ${hira}`)
     })
 
-    // create incremental search ev items
+    // create incremental search ev items (Lv.50)
     const effortValueInputs = [
       BaseStatsCalculator.MaxEffortValue,
       BaseStatsCalculator.MinEffortValue
@@ -233,6 +269,35 @@ export default createComponent({
       ev += BaseStatsCalculator.IntervalEffortValue
     ) {
       effortValueInputs.push(String(ev))
+    }
+
+    /**
+     * changeEffortValueボタンが押された時の動作 (Lv.50)
+     *
+     * @param {Number} interval 努力値の振れ幅
+     */
+    const changeEffortValue = (interval) => {
+      const beforeEffortValueNum = Number(state.effortValue)
+      if (
+        (beforeEffortValueNum <= BaseStatsCalculator.MinEffortValue &&
+          interval < 0) ||
+        (BaseStatsCalculator.MaxEffortValue <= beforeEffortValueNum &&
+          interval > 0)
+      ) {
+        return
+      }
+      if (beforeEffortValueNum === BaseStatsCalculator.LittleEffortValue) {
+        interval =
+          interval > 0
+            ? BaseStatsCalculator.LittleEffortValue
+            : -BaseStatsCalculator.LittleEffortValue
+      } else {
+        interval =
+          interval > 0
+            ? BaseStatsCalculator.LittleEffortValue * 2
+            : -BaseStatsCalculator.LittleEffortValue * 2
+      }
+      state.effortValue = String(beforeEffortValueNum + interval)
     }
 
     // create rank items
@@ -262,11 +327,8 @@ export default createComponent({
       state.rank = rankNumToStr(rankNum)
     }
 
-    const enableDecrementRankButton = (rank) => {
-      return Number(rank) > BaseStatsCalculator.MinRank
-    }
-    const enableIncrementRankButton = (rank) => {
-      return Number(rank) < BaseStatsCalculator.MaxRank
+    const clearText = () => {
+      state.pokemonName = ''
     }
 
     return {
@@ -277,8 +339,8 @@ export default createComponent({
       effortValueInputs,
       rankItems,
       changeRank,
-      enableDecrementRankButton,
-      enableIncrementRankButton
+      changeEffortValue,
+      clearText
     }
   }
 })
