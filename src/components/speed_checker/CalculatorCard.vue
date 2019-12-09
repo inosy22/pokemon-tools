@@ -32,7 +32,7 @@
         </v-radio-group>
       </div>
       <v-row no-gutters>
-        <v-col class="pr-5">
+        <v-col class="pr-5" cols="6">
           <v-combobox
             v-model="state.effortValue"
             :items="effortValueInputs"
@@ -40,13 +40,47 @@
             dense
           />
         </v-col>
-        <v-col class="pr-5">
+        <v-col class="pr-1" cols="3">
           <v-select
             v-model="state.rank"
             :items="rankItems"
             label="補正ランク"
             dense
           />
+        </v-col>
+        <v-col>
+          <template v-if="enableDecrementRankButton(state.rank)">
+            <v-icon
+              @click="changeRank(-1)"
+              large
+              color="rgba(255, 255, 255, 0.7)"
+              class="pt-1"
+            >
+              mdi-minus-box
+            </v-icon>
+          </template>
+          <template v-else>
+            <v-icon large color="rgba(255, 255, 255, 0.7)" class="pt-1">
+              mdi-minus-box-outline
+            </v-icon>
+          </template>
+        </v-col>
+        <v-col>
+          <template v-if="enableIncrementRankButton(state.rank)">
+            <v-icon
+              @click="changeRank(+1)"
+              color="rgba(255, 255, 255, 0.7)"
+              large
+              class="pt-1"
+            >
+              mdi-plus-box
+            </v-icon>
+          </template>
+          <template v-else>
+            <v-icon large color="rgba(255, 255, 255, 0.7)" class="pt-1">
+              mdi-plus-box-outline
+            </v-icon>
+          </template>
         </v-col>
       </v-row>
       <v-row no-gutters>
@@ -94,13 +128,26 @@ import SpeedStatsCalculator from '~/lib/pokemon/SpeedStatsCalculator'
  * カタカナからひらがなに変換
  * (IncrementalSearch用)
  *
- * @param str 対象のカタカナの文字列
+ * @param {String} str 対象のカタカナの文字列
  */
 function kanaToHira(str) {
   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
     const chr = match.charCodeAt(0) - 0x60
     return String.fromCharCode(chr)
   })
+}
+
+/**
+ * 補正ランクを数値から表示用の文字列へ変換
+ *
+ * @param {Number} rankNum 補正ランクの数値
+ */
+function rankNumToStr(rankNum) {
+  let rankStr = String(rankNum)
+  if (rankNum > 0) {
+    rankStr = '+' + rankStr
+  }
+  return rankStr
 }
 
 /**
@@ -196,11 +243,31 @@ export default createComponent({
       rank >= BaseStatsCalculator.MinRank;
       rank--
     ) {
-      let rankStr = String(rank)
-      if (rank > 0) {
-        rankStr = '+' + rankStr
+      rankItems.push(rankNumToStr(rank))
+    }
+
+    /**
+     * changeRankボタンが押された時の動作
+     *
+     * @param {Number} interval 補正ランクの振れ幅
+     */
+    const changeRank = (interval) => {
+      const beforeRankNum = Number(state.rank)
+      if (
+        (beforeRankNum <= BaseStatsCalculator.MinRank && interval < 0) ||
+        (BaseStatsCalculator.MaxRank <= beforeRankNum && interval > 0)
+      ) {
+        return
       }
-      rankItems.push(rankStr)
+      const rankNum = beforeRankNum + interval
+      state.rank = rankNumToStr(rankNum)
+    }
+
+    const enableDecrementRankButton = (rank) => {
+      return Number(rank) > BaseStatsCalculator.MinRank
+    }
+    const enableIncrementRankButton = (rank) => {
+      return Number(rank) < BaseStatsCalculator.MaxRank
     }
 
     return {
@@ -209,7 +276,10 @@ export default createComponent({
       compute,
       pokemonsForSearch,
       effortValueInputs,
-      rankItems
+      rankItems,
+      changeRank,
+      enableDecrementRankButton,
+      enableIncrementRankButton
     }
   }
 })
