@@ -32,23 +32,24 @@
         </v-radio-group>
       </div>
       <v-row no-gutters>
-        <v-col class="pr-5" cols="6">
+        <v-flex xs5 sm4>
           <v-combobox
             v-model="state.effortValue"
             :items="effortValueInputs"
             label="努力値"
             dense
           />
-        </v-col>
-        <v-col class="pr-1" cols="3">
+        </v-flex>
+        <v-flex xs1 sm2> </v-flex>
+        <v-flex xs3 class="pr-1">
           <v-select
             v-model="state.rank"
             :items="rankItems"
             label="補正ランク"
             dense
           />
-        </v-col>
-        <v-col cols="3">
+        </v-flex>
+        <v-flex xs3>
           <template v-if="enableDecrementRankButton(state.rank)">
             <v-icon
               @click="changeRank(-1)"
@@ -79,7 +80,7 @@
               mdi-plus-box-outline
             </v-icon>
           </template>
-        </v-col>
+        </v-flex>
       </v-row>
       <v-row no-gutters>
         <v-col>
