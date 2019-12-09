@@ -38,7 +38,7 @@ export default {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://pokemon-tools.netlify.com/img/peed-ball.png'
+        content: 'https://pokemon-tools.netlify.com/img/speed-ball.png'
       },
       {
         hid: 'og:site_name',
