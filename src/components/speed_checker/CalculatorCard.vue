@@ -48,7 +48,7 @@
             dense
           />
         </v-col>
-        <v-col>
+        <v-col cols="3">
           <template v-if="enableDecrementRankButton(state.rank)">
             <v-icon
               @click="changeRank(-1)"
@@ -64,8 +64,6 @@
               mdi-minus-box-outline
             </v-icon>
           </template>
-        </v-col>
-        <v-col>
           <template v-if="enableIncrementRankButton(state.rank)">
             <v-icon
               @click="changeRank(+1)"
