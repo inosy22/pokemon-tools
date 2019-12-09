@@ -274,28 +274,29 @@ export default createComponent({
     /**
      * changeEffortValueボタンが押された時の動作 (Lv.50)
      *
-     * @param {Number} interval 努力値の振れ幅
+     * @param {Number} changeValue 努力値の変更値
      */
-    const changeEffortValue = (interval) => {
+    const changeEffortValue = (changeValue) => {
       const beforeEffortValueNum = Number(state.effortValue)
       if (
         (beforeEffortValueNum <= BaseStatsCalculator.MinEffortValue &&
-          interval < 0) ||
+          changeValue < 0) ||
         (BaseStatsCalculator.MaxEffortValue <= beforeEffortValueNum &&
-          interval > 0)
+          changeValue > 0)
       ) {
         return
       }
-      if (beforeEffortValueNum === BaseStatsCalculator.LittleEffortValue) {
-        interval =
-          interval > 0
-            ? BaseStatsCalculator.LittleEffortValue
-            : -BaseStatsCalculator.LittleEffortValue
+      // 値変更の間隔を計算 (Lv.50の時、0,4,12,20...)
+      let interval
+      if (
+        (beforeEffortValueNum === BaseStatsCalculator.LittleEffortValue &&
+          changeValue < 0) ||
+        (beforeEffortValueNum === BaseStatsCalculator.MinEffortValue &&
+          changeValue > 0)
+      ) {
+        interval = changeValue * BaseStatsCalculator.LittleEffortValue
       } else {
-        interval =
-          interval > 0
-            ? BaseStatsCalculator.LittleEffortValue * 2
-            : -BaseStatsCalculator.LittleEffortValue * 2
+        interval = changeValue * BaseStatsCalculator.LittleEffortValue * 2
       }
       state.effortValue = String(beforeEffortValueNum + interval)
     }
