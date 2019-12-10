@@ -2,7 +2,7 @@
   <ul>
     <li>
       <h2>
-        <a href="./speed-checker">ポケモン素早さ比較 for 剣盾</a>
+        <a href="./speed-checker">ポケモン剣盾素早さ比較ツール</a>
       </h2>
     </li>
   </ul>

@@ -5,6 +5,7 @@
       large
       color="rgba(255, 255, 255, 0.7)"
       class="pt-1"
+      style="font-size: 32px"
     >
       {{ props.enableMinusButton ? 'mdi-minus-box' : 'mdi-minus-box-outline' }}
     </v-icon>
@@ -13,6 +14,7 @@
       color="rgba(255, 255, 255, 0.7)"
       large
       class="pt-1"
+      style="font-size: 32px"
     >
       {{ props.enablePlusButton ? 'mdi-plus-box' : 'mdi-plus-box-outline' }}
     </v-icon>

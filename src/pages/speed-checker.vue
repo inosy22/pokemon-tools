@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap align-center>
     <v-flex xs12 style="text-align: center">
-      <h2>ポケモン素早さ比較 for 剣盾</h2>
+      <h2>ポケモン剣盾素早さ比較ツール</h2>
     </v-flex>
     <v-flex xs12 sm6 class="card-container">
       <CalculatorCard
@@ -50,8 +50,12 @@
         </v-progress-linear>
       </v-flex>
     </v-footer>
-    <v-flex xs12 style="text-align: center">
-      ※ポケモンはLv.50を想定しています
+    <v-flex xs12 class="mt-5 mb-5">
+      <ul>
+        <li>ポケモンソードシールドのポケモンのみ対応</li>
+        <li>ポケモンはLv.50の個体値さいこう想定です</li>
+        <li>個体値調整/かるわざには現状対応してません</li>
+      </ul>
     </v-flex>
   </v-layout>
 </template>

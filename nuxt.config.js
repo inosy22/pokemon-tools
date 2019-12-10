@@ -7,15 +7,21 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + 'ポケモンツール',
-    title: 'ポケモン素早さ比較 for 剣盾',
+    titleTemplate: '%s',
+    title: 'ポケモン剣盾素早さ比較ツール',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
+        name: 'keywords',
+        content:
+          'ポケモンソードシールド,ポケモン剣盾,ソード,シールド,SW,SH,剣盾,けんたて,ポケモン,ぽけもん,素早さ,素早さ比較,素早さチェッカー'
+      },
+      {
         hid: 'description',
         name: 'description',
-        content: '速攻計算！ポケモン剣盾用素早さ比較ツール by @inosy22'
+        content:
+          '速攻計算！ポケモン剣盾(ポケモンソードシールド)素早さ比較ツール by @inosy22'
       },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@inosy22' },
@@ -23,7 +29,7 @@ export default {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ポケモン素早さ比較 for 剣盾'
+        content: 'ポケモン剣盾素早さ比較ツール'
       },
       {
         hid: 'og:url',
