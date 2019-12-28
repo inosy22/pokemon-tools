@@ -65,6 +65,12 @@
         <li>はやあし → スカーフ or 補正ランク+1</li>
       </ul>
       <v-divider class="mt-3 mb-3" />
+      <p>
+        <a href="https://qiita.com/inosy22/items/8761170b86f0f433bedf">
+          本システムについての技術記事
+        </a>
+      </p>
+      <v-divider class="mt-3 mb-3" />
     </v-flex>
   </v-layout>
 </template>
