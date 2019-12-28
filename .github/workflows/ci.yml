@@ -11,7 +11,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '10.16.x'
+    - name: install packages
+      run: yarn install
     - name: lint
-      run: npm run lint
+      run: yarn lint
     - name: genearate
-      run: npm run generate
+      run: yarn generate
