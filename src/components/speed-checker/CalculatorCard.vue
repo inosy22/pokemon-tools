@@ -126,7 +126,7 @@
 import { createComponent, computed, reactive } from '@vue/composition-api'
 import BaseStatsCalculator from '~/lib/pokemon/BaseStatsCalculator'
 import SpeedStatsCalculator from '~/lib/pokemon/SpeedStatsCalculator'
-import PlusMinusButton from '~/components/speed_checker/PlusMinusButton'
+import PlusMinusButton from '~/components/speed-checker/PlusMinusButton'
 
 /**
  * カタカナからひらがなに変換
