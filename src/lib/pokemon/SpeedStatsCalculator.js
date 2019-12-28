@@ -76,14 +76,14 @@ export default class SpeedStatsCalculator extends BaseStatsCalclator {
    */
   calc() {
     let actualStats = super.calc()
-    if (this.isActiveTailwind) {
-      actualStats = Math.floor(actualStats * 2)
+    if (this.hasScarf) {
+      actualStats = Math.floor(actualStats * 1.5)
     }
     if (this.isActiveWeather) {
       actualStats = Math.floor(actualStats * 2)
     }
-    if (this.hasScarf) {
-      actualStats = Math.floor(actualStats * 1.5)
+    if (this.isActiveTailwind) {
+      actualStats = Math.floor(actualStats * 2)
     }
     if (this.isParalysis) {
       actualStats = Math.floor(actualStats / 2)

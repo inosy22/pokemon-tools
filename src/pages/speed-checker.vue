@@ -50,12 +50,27 @@
         </v-progress-linear>
       </v-flex>
     </v-footer>
-    <v-flex xs12 class="mt-5 mb-5">
+    <v-flex xs12>
+      <v-divider class="mt-3 mb-3" />
+      <p>※ このツールについて</p>
       <ul>
         <li>ポケモンソードシールドのポケモンのみ対応</li>
         <li>ポケモンはLv.50の個体値さいこう想定です</li>
-        <li>個体値調整/かるわざには現状対応してません</li>
+        <li>個体値調整には現状対応してません</li>
       </ul>
+      <v-divider class="mt-3 mb-3" />
+      <p>※ 未実装の内容は下記の様に対応してください</p>
+      <ul>
+        <li>かるわざ → 天候特性</li>
+        <li>はやあし → スカーフ or 補正ランク+1</li>
+      </ul>
+      <v-divider class="mt-3 mb-3" />
+      <p>
+        <a href="https://qiita.com/inosy22/items/8761170b86f0f433bedf">
+          本システムについての技術記事
+        </a>
+      </p>
+      <v-divider class="mt-3 mb-3" />
     </v-flex>
   </v-layout>
 </template>
