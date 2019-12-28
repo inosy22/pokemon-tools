@@ -1,0 +1,19 @@
+name: CI
+
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.16.x'
+    - name: install packages
+      run: yarn install
+    - name: lint
+      run: yarn lint
+    - name: genearate
+      run: yarn generate

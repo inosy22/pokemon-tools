@@ -83,7 +83,7 @@
 
 <script>
 import { createComponent, reactive, computed } from '@vue/composition-api'
-import CalculatorCard from '~/components/speed_checker/CalculatorCard'
+import CalculatorCard from '~/components/speed-checker/CalculatorCard'
 
 export default createComponent({
   components: {
