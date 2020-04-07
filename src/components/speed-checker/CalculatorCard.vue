@@ -148,6 +148,13 @@
   </v-card>
 </template>
 
+<style scoped>
+/** v-btnのスマホでタップすると、hoverデザインが残ってしまうので消す */
+.v-btn:hover::before {
+  opacity: 0;
+}
+</style>
+
 <script>
 import { createComponent, computed, reactive } from '@vue/composition-api'
 import BaseStatsCalculator from '~/lib/pokemon/BaseStatsCalculator'
