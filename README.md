@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/01997dc3-d851-4c5e-bac6-b6477aa2c582/deploy-status)](https://app.netlify.com/sites/pokemon-tools/deploys)
+
 # pokemon-speed-checker
 
 > Pokemon speed checker for sword-shield 
