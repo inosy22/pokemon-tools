@@ -8,7 +8,7 @@
         <v-flex :style="{ height: '80px', 'text-align': 'center' }" xs12>
           <span>
             &copy; 2019 created by
-            <a href="https://twitter.com/inosy22_">@inosy22</a>
+            <a href="https://twitter.com/inosy22_poke">@inosy22_poke</a>
           </span>
         </v-flex>
       </v-container>
