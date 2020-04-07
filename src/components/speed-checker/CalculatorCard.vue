@@ -27,13 +27,35 @@
           </span>
         </v-col>
       </v-row>
-      <div>
-        <v-radio-group v-model="state.natureCorrection" label="性格補正" row>
-          <v-radio label="上昇" value="1" color="white" />
-          <v-radio label="なし" value="0" color="white" />
-          <v-radio label="下降" value="-1" color="white" />
-        </v-radio-group>
-      </div>
+      <v-row no-gutters style="margin-top: 6px; height: 4.5rem;">
+        <v-flex xs6>
+          <span style="font-size: 0.8rem;">性格補正</span>
+          <br />
+          <v-btn-toggle v-model="state.natureCorrection" mandatory dense>
+            <v-btn small value="1">
+              <v-icon small>mdi-arrow-up-thick</v-icon>
+            </v-btn>
+            <v-btn small value="0">
+              <v-icon small>mdi-minus</v-icon>
+            </v-btn>
+            <v-btn small value="-1">
+              <v-icon small>mdi-arrow-down-thick</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </v-flex>
+        <v-flex xs6>
+          <span style="font-size: 0.8rem;">個体値</span>
+          <br />
+          <v-btn-toggle v-model="state.individualValue" mandatory dense>
+            <v-btn small value="31">
+              さいこう
+            </v-btn>
+            <v-btn small value="0">
+              ダメかも
+            </v-btn>
+          </v-btn-toggle>
+        </v-flex>
+      </v-row>
       <v-row no-gutters>
         <v-flex xs3>
           <v-combobox
@@ -92,6 +114,7 @@
             v-model="state.hasScarf"
             label="スカーフ (×1.5)"
             color="white"
+            height="0"
           />
         </v-col>
         <v-col>
@@ -99,6 +122,7 @@
             v-model="state.isParalysis"
             label="まひ状態 (×0.5)"
             color="white"
+            height="0"
           />
         </v-col>
       </v-row>
@@ -108,6 +132,7 @@
             v-model="state.isActiveTailwind"
             label="おいかぜ (×2.0)"
             color="white"
+            height="1"
           />
         </v-col>
         <v-col>
@@ -115,6 +140,7 @@
             v-model="state.isActiveWeather"
             label="天候特性 (×2.0)"
             color="white"
+            height="1"
           />
         </v-col>
       </v-row>
@@ -200,6 +226,7 @@ export default createComponent({
       level: '50',
       effortValue: '252',
       rank: '0',
+      individualValue: '31',
       hasScarf: false,
       isParalysis: false,
       isActiveTailwind: false,
@@ -221,6 +248,7 @@ export default createComponent({
           speedStatsCalculator.setEffortValue(state.effortValue)
           speedStatsCalculator.setLevel(state.level)
           speedStatsCalculator.setRank(state.rank)
+          speedStatsCalculator.setIndividualValue(state.individualValue)
           speedStatsCalculator.setHasScarf(state.hasScarf)
           speedStatsCalculator.setIsParalysis(state.isParalysis)
           speedStatsCalculator.setIsActiveTailwind(state.isActiveTailwind)

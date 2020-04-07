@@ -43,6 +43,16 @@ export default class BaseStatsCalculator {
   static MaxLevel = 100
 
   /**
+   * 個体値の最小値
+   */
+  static MinIndividualValue = 0
+
+  /**
+   * 個体値の最大値
+   */
+  static MaxIndividualValue = 31
+
+  /**
    * 種族値 (0~)
    *
    * @var {Number} baseStats
@@ -67,14 +77,20 @@ export default class BaseStatsCalculator {
    * レベル (1~100)
    *
    * @var {Number} level
-   * @throws {Error}
    */
   level = 50
 
   /**
    * 補正ランク (-6~+6)
+   * @var {Number} rank
    */
   rank = 0
+
+  /**
+   * 個体値(0~31)
+   * @var {Number} individualValue
+   */
+  individualValue = BaseStatsCalculator.MaxIndividualValue
 
   /**
    * 種族値を設定
@@ -156,12 +172,29 @@ export default class BaseStatsCalculator {
   setRank(rank) {
     const target = Number(rank)
     if (
-      rank < BaseStatsCalculator.MinRank ||
-      rank > BaseStatsCalculator.MaxRank
+      target < BaseStatsCalculator.MinRank ||
+      target > BaseStatsCalculator.MaxRank
     ) {
       throw new Error('Rank is invalid.')
     }
     this.rank = target
+  }
+
+  /**
+   * 個体値の設定
+   *
+   * @param {Number|String} individualValue
+   * @throws {Error}
+   */
+  setIndividualValue(individualValue) {
+    const target = Number(individualValue)
+    if (
+      target < BaseStatsCalculator.MinEffortValue ||
+      target > BaseStatsCalculator.MaxIndividualValue
+    ) {
+      throw new Error('Individual Value is invalid.')
+    }
+    this.individualValue = target
   }
 
   /**
@@ -172,7 +205,8 @@ export default class BaseStatsCalculator {
   calc() {
     // 通常の実数値を計算
     let actualStats = Math.floor(
-      ((this.baseStats * 2 + 31 + this.effortValue / 4) * (this.level / 100) +
+      ((this.baseStats * 2 + this.individualValue + this.effortValue / 4) *
+        (this.level / 100) +
         5) *
         this.natureCorrection
     )
