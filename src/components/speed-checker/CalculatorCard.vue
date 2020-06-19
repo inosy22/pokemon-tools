@@ -167,12 +167,12 @@ import PlusMinusButton from '~/components/speed-checker/PlusMinusButton'
  *
  * @param {String} str 対象のカタカナの文字列
  */
-function kanaToHira(str) {
-  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
-    const chr = match.charCodeAt(0) - 0x60
-    return String.fromCharCode(chr)
-  })
-}
+// function kanaToHira(str) {
+//   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+//     const chr = match.charCodeAt(0) - 0x60
+//     return String.fromCharCode(chr)
+//   })
+// }
 
 /**
  * 補正ランクを数値から表示用の文字列へ変換
@@ -225,6 +225,7 @@ export default createComponent({
   setup(props, ctx) {
     // load json
     const pokemons = require('~/assets/data/pokemon.json')
+    const pokemonsForSearch = require('~/assets/data/pokemons_for_search.json')
 
     // reactive properties
     const state = reactive({
@@ -287,11 +288,11 @@ export default createComponent({
     }
 
     // create incremental search pokemon items
-    const pokemonsForSearch = []
-    Object.keys(pokemons).forEach((val) => {
-      const hira = kanaToHira(val)
-      pokemonsForSearch.push(`${val} / ${hira}`)
-    })
+    // const pokemonsForSearch = []
+    // Object.keys(pokemons).forEach((val) => {
+    //   const hira = kanaToHira(val)
+    //   pokemonsForSearch.push(`${val} / ${hira}`)
+    // })
 
     // create incremental search ev items (Lv.50)
     const effortValueInputs = [
