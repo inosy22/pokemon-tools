@@ -226,6 +226,13 @@ export default createComponent({
     // load json
     const pokemons = require('~/assets/data/pokemon.json')
     const pokemonsForSearch = require('~/assets/data/pokemons_for_search.json')
+    // create incremental search pokemon items
+    // const pokemonsForSearch = []
+    // Object.keys(pokemons).forEach((val) => {
+    //   const hira = kanaToHira(val)
+    //   pokemonsForSearch.push(`${val} / ${hira}`)
+    // })
+    // console.log(JSON.stringify(pokemonsForSearch))
 
     // reactive properties
     const state = reactive({
@@ -286,13 +293,6 @@ export default createComponent({
         return Number(state.rank) < BaseStatsCalculator.MaxRank
       })
     }
-
-    // create incremental search pokemon items
-    // const pokemonsForSearch = []
-    // Object.keys(pokemons).forEach((val) => {
-    //   const hira = kanaToHira(val)
-    //   pokemonsForSearch.push(`${val} / ${hira}`)
-    // })
 
     // create incremental search ev items (Lv.50)
     const effortValueInputs = [
