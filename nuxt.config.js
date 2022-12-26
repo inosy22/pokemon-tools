@@ -8,28 +8,28 @@ export default {
    */
   head: {
     titleTemplate: '%s',
-    title: 'ポケモン剣盾素早さ比較ツール',
+    title: 'ポケモンSV素早さ比較ツール',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         name: 'keywords',
         content:
-          'ポケモンソードシールド,ポケモン剣盾,ソード,シールド,SW,SH,剣盾,けんたて,ポケモン,ぽけもん,素早さ,素早さ比較,素早さチェッカー'
+          'ポケモンSV,ポケモンスカバイ,ポケモンスカーレットバイオレット,スカーレット,バイオレット,SV,スカバイ,すかばい,ポケモン,ぽけもん,素早さ,素早さ比較,素早さチェッカー'
       },
       {
         hid: 'description',
         name: 'description',
         content:
-          '速攻計算！ポケモン剣盾(ポケモンソードシールド)素早さ比較ツール by @inosy22'
+          '速攻計算！ポケモンSV(スカーレット・バイオレット)素早さ比較ツール by @inosy22'
       },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
-      { hid: 'twitter:site', name: 'twitter:site', content: '@inosy22' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@inosy22_poke' },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ポケモン剣盾素早さ比較ツール'
+        content: 'ポケモンSV素早さ比較ツール'
       },
       {
         hid: 'og:url',
@@ -39,7 +39,7 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: '速攻計算！ポケモン剣盾用素早さ比較ツール by @inosy22'
+        content: '速攻計算！ポケモンSV用素早さ比較ツール by @inosy22'
       },
       {
         hid: 'og:image',
@@ -49,7 +49,7 @@ export default {
       {
         hid: 'og:site_name',
         name: 'og:site_name',
-        content: 'ポケモン素早さ比較 for 剣盾'
+        content: 'ポケモンSV素早さ比較ツール'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
