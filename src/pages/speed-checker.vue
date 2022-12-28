@@ -178,6 +178,11 @@ export default createComponent({
       calculatedOwnSpeed,
       calculatedOpponentSpeed
     }
+  },
+  head() {
+    return {
+      title: 'ポケモンSV素早さ比較ツール'
+    }
   }
 })
 </script>

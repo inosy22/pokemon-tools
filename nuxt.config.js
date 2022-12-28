@@ -7,8 +7,8 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s',
-    title: 'ポケモンSV素早さ比較ツール',
+    titleTemplate: '',
+    title: 'ポケモンツール一覧',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -34,7 +34,7 @@ export default {
       {
         hid: 'og:url',
         property: 'og:url',
-        content: 'https://pokemon-tools.netlify.com'
+        content: 'https://pokemon-tools.netlify.com/speed-checker/'
       },
       {
         hid: 'og:description',
