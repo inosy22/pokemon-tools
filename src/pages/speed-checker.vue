@@ -1,24 +1,16 @@
 <template>
   <v-layout row wrap align-center>
-    <v-flex xs12>
-      <v-alert type="info" prominent colored-border border="left" class="mb-4">
-        <div style="font-size: 1.1rem;">
-          ポケモンチャンピオンズ版の素早さ比較ツールはこちら
-        </div>
-        <div class="mt-2">
-          <v-btn
-            color="amber"
-            dark
-            href="https://gamewith.ai/pokemon-champions/ja/speed-calculator"
-            target="_blank"
-            large
-            class="black--text font-weight-bold"
-          >
-            ポケモンチャンピオンズ版はこちら →
-          </v-btn>
-        </div>
-      </v-alert>
-    </v-flex>
+    <div class="champions-banner-wrap">
+      <a
+        href="https://gamewith.ai/pokemon-champions/ja/speed-calculator"
+        target="_blank"
+        class="champions-banner"
+      >
+        ポケモンチャンピオンズ版の<br class="sp-only" />素早さ比較ツールはこちら
+        <span class="banner-arrow">▶</span>
+      </a>
+    </div>
+    <div class="banner-spacer" />
     <v-flex xs12 style="text-align: center">
       <h2>ポケモンSV素早さ比較ツール</h2>
     </v-flex>
@@ -138,6 +130,68 @@
 <style scoped>
 .card-container {
   padding: 5px;
+}
+.champions-banner-wrap {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+}
+.champions-banner {
+  display: block;
+  background-color: #ffc107;
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 18px 16px;
+  text-decoration: underline;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.champions-banner:hover {
+  background-color: #ffca28;
+}
+.champions-banner .banner-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.2s;
+}
+.champions-banner:hover .banner-arrow {
+  transform: translateX(4px);
+}
+.banner-spacer {
+  display: none;
+  width: 100%;
+  height: 80px;
+}
+.sp-only {
+  display: none;
+}
+@media (max-width: 600px) {
+  .champions-banner-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    transform: none;
+    z-index: 9999;
+    margin-bottom: 0;
+  }
+  .champions-banner {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 9px 16px;
+  }
+  .banner-spacer {
+    height: 90px;
+  }
+  .banner-spacer {
+    display: block;
+  }
+  .sp-only {
+    display: inline;
+  }
 }
 </style>
 
