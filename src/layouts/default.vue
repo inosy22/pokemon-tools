@@ -5,12 +5,6 @@
         <div :style="{ margin: '0 10px' }">
           <nuxt />
         </div>
-        <v-flex :style="{ height: '80px', 'text-align': 'center' }" xs12>
-          <span>
-            &copy; 2019 created by
-            <a href="https://twitter.com/inosy22_poke">@inosy22_poke</a>
-          </span>
-        </v-flex>
       </v-container>
     </v-content>
   </v-app>

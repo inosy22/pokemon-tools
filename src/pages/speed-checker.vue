@@ -1,5 +1,24 @@
 <template>
   <v-layout row wrap align-center>
+    <v-flex xs12>
+      <v-alert type="info" prominent colored-border border="left" class="mb-4">
+        <div style="font-size: 1.1rem;">
+          ポケモンチャンピオンズ版の素早さ比較ツールはこちら
+        </div>
+        <div class="mt-2">
+          <v-btn
+            color="amber"
+            dark
+            href="https://gamewith.ai/pokemon-champions/ja/speed-calculator"
+            target="_blank"
+            large
+            class="black--text font-weight-bold"
+          >
+            ポケモンチャンピオンズ版はこちら →
+          </v-btn>
+        </div>
+      </v-alert>
+    </v-flex>
     <v-flex xs12 style="text-align: center">
       <h2>ポケモンSV素早さ比較ツール</h2>
     </v-flex>
@@ -74,6 +93,16 @@
       <v-divider class="mt-3 mb-3" />
       <p># アップデート情報</p>
       <ul>
+        <li>2026/04/07</li>
+        <ul>
+          <li>
+            <a
+              href="https://gamewith.ai/pokemon-champions/ja/speed-calculator"
+              target="_blank"
+              >ポケモンチャンピオンズ版の素早さ比較ツール</a
+            >に移行しました
+          </li>
+        </ul>
         <li>2022/12/26</li>
         <ul>
           <li>ポケモンSVに対応しました</li>
@@ -101,12 +130,6 @@
           <li>ポケモン剣盾用素早さ比較ツールとしてリリース！</li>
         </ul>
       </ul>
-      <v-divider class="mt-3 mb-3" />
-      <p>
-        <a href="https://qiita.com/inosy22/items/8761170b86f0f433bedf">
-          本システムについての技術記事
-        </a>
-      </p>
       <v-divider class="mt-3 mb-3" />
     </v-flex>
   </v-layout>
