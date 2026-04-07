@@ -106,6 +106,10 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    loaders: {
+      sass: { sassOptions: { fiber: false } },
+      scss: { sassOptions: { fiber: false } }
+    }
   }
 }

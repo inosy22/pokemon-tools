@@ -5,10 +5,10 @@
   "author": "inosy22",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxt",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "NODE_OPTIONS=--openssl-legacy-provider nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest"
@@ -32,5 +32,8 @@
     "jest": "^24.1.0",
     "prettier": "^1.16.4",
     "vue-jest": "^4.0.0-0"
+  },
+  "resolutions": {
+    "fibers": "npm:empty-npm-package@1.0.0"
   }
 }
