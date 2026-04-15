@@ -39,7 +39,7 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: '速攻計算！ポケモンSV・ポケモンチャンピオンズ対応 素早さ比較ツール by @inosy22'
+        content: '速攻計算！ポケモンチャンピオンズ版あり！素早さ比較ツール'
       },
       {
         hid: 'og:image',
