@@ -6,6 +6,7 @@
         <v-combobox
           v-model="state.pokemonName"
           :items="pokemonsForSearch"
+          :filter="pokemonFilter"
           :error="compute.speed.value === '???'"
           @click:clear="clearText"
           clear-icon="mdi-close-circle"
@@ -163,16 +164,15 @@ import PlusMinusButton from '~/components/speed-checker/PlusMinusButton'
 
 /**
  * カタカナからひらがなに変換
- * (IncrementalSearch用)
  *
  * @param {String} str 対象のカタカナの文字列
  */
-// function kanaToHira(str) {
-//   return str.replace(/[\u30A1-\u30F6]/g, function(match) {
-//     const chr = match.charCodeAt(0) - 0x60
-//     return String.fromCharCode(chr)
-//   })
-// }
+function kanaToHira(str) {
+  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60
+    return String.fromCharCode(chr)
+  })
+}
 
 /**
  * 補正ランクを数値から表示用の文字列へ変換
@@ -198,7 +198,7 @@ function trimPokemonName(inputPokemonName, pokemonNameMap) {
   if (inputPokemonName === null || inputPokemonName === undefined) {
     return null
   }
-  const trimedName = inputPokemonName.split('/')[0].trim()
+  const trimedName = inputPokemonName.trim()
   if (pokemonNameMap[trimedName] === undefined) {
     return null
   }
@@ -225,14 +225,14 @@ export default createComponent({
   setup(props, ctx) {
     // load json
     const pokemons = require('~/assets/data/pokemon.json')
-    const pokemonsForSearch = require('~/assets/data/pokemons_for_search.json')
-    // create incremental search pokemon items
-    // const pokemonsForSearch = []
-    // Object.keys(pokemons).forEach((val) => {
-    //   const hira = kanaToHira(val)
-    //   pokemonsForSearch.push(`${val} / ${hira}`)
-    // })
-    // console.log(JSON.stringify(pokemonsForSearch))
+    const pokemonsForSearch = Object.keys(pokemons)
+
+    // カスタムフィルター: カタカナ・ひらがなどちらでも検索可能にする
+    const pokemonFilter = (item, queryText, itemText) => {
+      const query = queryText.toLowerCase()
+      if (itemText.toLowerCase().includes(query)) return true
+      return kanaToHira(item).includes(query)
+    }
 
     // reactive properties
     const state = reactive({
@@ -373,6 +373,7 @@ export default createComponent({
       state,
       compute,
       pokemonsForSearch,
+      pokemonFilter,
       effortValueInputs,
       rankItems,
       changeRank,

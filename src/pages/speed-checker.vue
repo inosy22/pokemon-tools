@@ -12,7 +12,7 @@
     </div>
     <div class="banner-spacer" />
     <v-flex xs12 style="text-align: center">
-      <h2>ポケモンSV素早さ比較ツール</h2>
+      <h1 class="headline">ポケモンSV素早さ比較ツール</h1>
     </v-flex>
     <v-flex xs12 sm6 class="card-container">
       <CalculatorCard
@@ -258,7 +258,7 @@ export default createComponent({
   },
   head() {
     return {
-      title: 'ポケモンSV素早さ比較ツール'
+      title: 'ポケモン素早さ比較ツール（チャンピオンズ版あり）'
     }
   }
 })

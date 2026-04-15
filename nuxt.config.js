@@ -15,13 +15,13 @@ export default {
       {
         name: 'keywords',
         content:
-          'ポケモンSV,ポケモンスカバイ,ポケモンスカーレットバイオレット,スカーレット,バイオレット,SV,スカバイ,すかばい,ポケモン,ぽけもん,素早さ,素早さ比較,素早さチェッカー'
+          'ポケモンSV,ポケモンスカバイ,ポケモンスカーレットバイオレット,スカーレット,バイオレット,SV,スカバイ,すかばい,ポケモンチャンピオンズ,ポケチャン,Pokemon Champions,ポケモン,ぽけもん,素早さ,素早さ比較,素早さチェッカー'
       },
       {
         hid: 'description',
         name: 'description',
         content:
-          '速攻計算！ポケモンSV(スカーレット・バイオレット)素早さ比較ツール by @inosy22'
+          '速攻計算！ポケモンチャンピオンズ版あり！ポケモン素早さ比較調整ツール'
       },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@inosy22_poke' },
@@ -29,7 +29,7 @@ export default {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ポケモンSV素早さ比較ツール'
+        content: 'ポケモン素早さ比較ツール（チャンピオンズ版あり）'
       },
       {
         hid: 'og:url',
@@ -39,7 +39,7 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: '速攻計算！ポケモンSV用素早さ比較ツール by @inosy22'
+        content: '速攻計算！ポケモンSV・ポケモンチャンピオンズ対応 素早さ比較ツール by @inosy22'
       },
       {
         hid: 'og:image',
@@ -49,7 +49,7 @@ export default {
       {
         hid: 'og:site_name',
         name: 'og:site_name',
-        content: 'ポケモンSV素早さ比較ツール'
+        content: 'ポケモン素早さ比較ツール（チャンピオンズ版あり）'
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
